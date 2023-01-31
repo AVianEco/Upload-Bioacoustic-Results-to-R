@@ -13,7 +13,7 @@ Basic R-scripts meant for uploading and parsing CSV outputs from popular bioacou
 This code is intended to be customized to your specific project. Users will need to open and review the code prior to use. Each script has a pre-amble. The pre-amble contains a section called "User Modifications Required". This section describes which portions of code are customizeable to the user's project. 
 
 ## CONTACT ##
-Code provided is as-is, with no guarantees. If you have questions or issues you may wish to contact us directly at info@avianeco.com.
+Code provided is as-is, with no guarantees. If you have questions or issues you may wish to submit an issue or contact us directly at info@avianeco.com.
 
 ## LICENSE ##
 These R scripts are licensed under an Apache License, V2.0 © 2023 Tyne Baker, and A/Vian Ecological Consulting Inc.
