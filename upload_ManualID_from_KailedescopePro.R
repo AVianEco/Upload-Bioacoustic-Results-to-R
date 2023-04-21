@@ -20,38 +20,52 @@
 #   24JAN2023- V1- Initial drafting of functional script.
 #   25JAN2023- V2 Clean-up and formatting to match other upload ID scripts.
 #   30JAN2023- V3 Clarify that this script can be used for AutoID for Bats and Cluster Analysis outputs.
+#   28FEB2023- V4 Test on Mac and improve script for cross-platform performance.
+#   01MAR2023- V5 Fix import of headers from CSV to have consistent import.
+#   02MAR2023- V6 Fix file path splitting method to be more concise and ensure a reserved is used.
+#   03MAR2023- V7 Add a checking step for the max number of delimiters in the FOLDER column.
+#   20APR2023- V8 MAC tests and small bug fixes.
 
 # ------Clear the Workspace-------
 rm(list = ls())
 
 # ------Load Libraries------
 library(tidyverse)
+library(tcltk)
 
 # ------Define File Locations and Output Name*------
 # Find the file name and path to the saved cluster file on your computer.
 source_filepath <- file.choose()
 
 # Find the directory where you'd like to save the modified output csv.
-destination_filepath <- choose.dir()
+destination_filepath <- tk_choose.dir()
 
 #Edit the file name within the "" below to name the output csv. Name it with a different name from the input file name.
 output_CSV_name <-"KPRO_ID_data.csv"
 
-# ------Load cluster CSV as Raw Data------
+# ------Load cluster CSV as Raw Data and Clean Headers------
 
-# Read in the CSV file (cluster.csv OR id.csv) as a character vector
-ID_rawdata <- scan(source_filepath, what = "character", sep = "\n")
+#Read in CSV file
+ID_rawdata <- read.table(source_filepath, sep=",", header= TRUE)
 
-# Replace all the backslashes in cells of this dataframe with semi-colons
-ID_rawdata <- gsub("\\", ";", ID_rawdata,fixed=TRUE)
+#Get column names from the original csv file
+raw_headers <- as.character(read.csv(source_filepath, nrow=1, header=FALSE))
 
-# Convert the character vector into a data frame
-ID_rawdata <- read.csv(textConnection(ID_rawdata), header = TRUE)
+# Clean these headers by replacing spaces with underscores and asterisks with empty strings
+clean_headers <- str_replace_all(raw_headers, c(" " = "_", "\\*" = ""))
+
+#replace the headers in the raw dataset with the cleaned headers
+colnames(ID_rawdata)<-clean_headers
 
 # See the dataframe you just made
 view(ID_rawdata)
 
 # ------Define New Column Headers*-----
+
+#All headers MUST be unique. 
+  #You cannot have any repeats when creating the following Header groups, within
+  #and between groups. It will result in replacement of previously split columns 
+  #as you progress through code.
 
 # __Headers for the INDIR column__ #
 
@@ -59,31 +73,31 @@ view(ID_rawdata)
 head(ID_rawdata$INDIR,1)
 
 #Examine the printed example, define column headers for each nested file folder listed between the semi-colons.
-INDIR_headers<- c("insert","heading","names","for","each","item","between","semicolons")
+INDIR_headers<- c("insert","heading","names","for","each","item","between","slashes")
 
 # __Headers for the FOLDER column__ #
 
 #Does the FOLDER column contains more than one category?
-if(is.na(ID_rawdata$FOLDER[1]) || !str_detect(ID_rawdata$FOLDER[1], ";")) {
-  print("No, skip to Headers for the MANUAL.ID. column")
+if(is.na(ID_rawdata$FOLDER[1]) || !str_detect(ID_rawdata$FOLDER[1], "\\\\")) {
+  message("No, skip to Headers for the MANUAL_ID column")
 } else {
-  print("Yes, here is the first row")
-  head(ID_rawdata$FOLDER, 1)
+  max_index_FOLDER <- str_count(ID_rawdata$FOLDER, "\\\\")%>%
+    which.max()
+  message("Yes, here is the FOLDER row with the most delimiters: ", ID_rawdata[max_index_FOLDER,"FOLDER"])
 }
 
-#If yes, examine the printed example and define column headers for each nested file folder listed between the semi-colons.
-FOLDER_headers<- c("insert","heading","names","for","each","item","between","semicolons")
+#If yes, examine the message and define column headers for each nested file folder listed between the semi-colons.
+FOLDER_headers<- c("insert","heading","names","for","each","item","between","slashes")
 
-# __Headers for the MANUAL.ID. column__ #
+# __Headers for the MANUAL_ID column__ #
 
-# Find the "MANUAL.ID." with the most commas, and print it.
-max_index <- str_count(ID_rawdata$MANUAL.ID., ",")%>%
+# Find the "MANUAL_ID" with the most commas, and print it.
+max_index_ID <- str_count(ID_rawdata$MANUAL_ID, ",")%>%
                 which.max()
-print(ID_rawdata[max_index,"MANUAL.ID."])
+message("Here is the MANUAL_ID row with the most delimiters: ", ID_rawdata[max_index_ID,"MANUAL_ID"])
 
-
-#Use the printed label to define column headers for your comma-delimited labelling schema.
-MANUAL.ID._headers<- c("insert","heading","names","for","each","item","between","commas")
+#Use the message to define column headers for your comma-delimited labelling schema.
+MANUAL_ID_headers<- c("insert","heading","names","for","each","item","between","commas")
 
 # ------Split out the new columns------
 
@@ -92,19 +106,19 @@ ID_data<- ID_rawdata
 message("The unmodified ID_data dataframe has ", ncol(ID_data), " columns")
 
 #Split out the filepaths in the INDIR column to new columns.
-ID_data<-separate(data = ID_rawdata, col = INDIR, into = c(INDIR_headers), sep = ";", remove = FALSE)
+ID_data<-separate(data = ID_data, col = INDIR, into = c(INDIR_headers), sep = "\\\\", remove = FALSE)
 message ("The ID_data dataframe has ", ncol(ID_data), " columns, now")
 
 #Split out the filepaths in the FOLDER column to new columns, if necessary.
-if(is.na(ID_data$FOLDER[1]) || !str_detect(ID_data$FOLDER[1], ";")) {
+if(is.na(ID_data$FOLDER[1]) || !str_detect(ID_data$FOLDER[1], "\\\\")) {
   message("No split necessary for FOLDER column, the ID_data dataframe still has ", ncol(ID_data), " columns.")
 } else {
-  ID_data <- separate(data = ID_data, col = FOLDER, into = c(FOLDER_headers), sep = ";", remove = FALSE)
+  ID_data <- separate(data = ID_data, col = FOLDER, into = c(FOLDER_headers), sep = "\\\\", remove = FALSE)
   message("FOLDER column was split into ", ncol(ID_data), " new columns")
 }
 
 #Split out the annotations in the MANUAL.ID. column to new columns.
-ID_data<-separate(data = ID_data, col = MANUAL.ID., into = c(MANUAL.ID._headers), sep = ",", remove = FALSE)
+ID_data<-separate(data = ID_data, col = MANUAL_ID, into = c(MANUAL_ID_headers), sep = ",", remove = FALSE)
 message("The ID_data dataframe has ", ncol(ID_data), " columns, now")
 
 # ------ Export modified dataframe to a new CSV ------

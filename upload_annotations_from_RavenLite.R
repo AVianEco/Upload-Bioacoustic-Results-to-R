@@ -19,19 +19,21 @@
 # Change Log: 
 #   24JAN2023- V1- Initial drafting of functional script.
 #   30JAN2023- V2- Split from RavenPro Script. Clean-up and formatting to match other upload ID scripts.
-
+#   28FEB2023- V3- Test on Mac and improve script for cross-platform performance.
 # ------Clear the Workspace-------
 rm(list = ls())
 
 # ------Load Libraries------
 library(tidyverse)
+library(tcltk)
+#note some Mac users may be prompted to download XQuartz from xquartz.org to use tcltk base package.
 
 # ------Define File Locations and Output Name*------
-# Find the file name and path to the saved cluster file on your computer.
+# Find the file name and path to the saved annotation file on your computer.
 source_filepath <- file.choose()
 
 # Find the directory where you'd like to save the modified output csv.
-destination_filepath <- choose.dir()
+destination_filepath <- tk_choose.dir()
 
 #Edit the file name within the "" below to name the output csv. Name it with a different name from the input file name.
 output_CSV_name <-"RavenLite_Annotation_data.csv"
