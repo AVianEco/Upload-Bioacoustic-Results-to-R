@@ -19,10 +19,10 @@ Code provided is as-is, with no guarantees. If you have questions or issues you 
 These R scripts are licensed under an Apache License, V2.0 © 2023 Tyne Baker, and A/Vian Ecological Consulting Inc.
 
 ## PLATFORM TESTING ##
-*Note Scripts are only tested for functionality on Windows and MacOS. 
+These scripts have only been tested on Windows and MacOS. 
 
 Last platform test peformed on 20APR2023 with:
-R version 4.2.2
-R Studio version 2023.03.0+386
-MacOS Ventura version 13.0 
-Windows 11 Home version 22H2
+- R version 4.2.2
+- R Studio version 2023.03.0+386
+- MacOS Ventura version 13.0 
+- Windows 11 Home version 22H2
