@@ -3,8 +3,6 @@
 ## OVERVIEW ##
 Basic R-scripts meant for uploading and parsing CSV outputs from popular bioacoustic analysis programsto an R database. These scripts are referenced in our online and in-person introductory courses for bioacoustics. Most of these scripts contain code to split user-defined, comma-delimited manual annotations into separated columns.
 
-*Note Scripts are currently only tested for functionality on Windows. Updates for multiple platforms to come.
-
 ### AVAILABLE SCRIPTS ###
 - Upload Annotations from Cornell's RavenLite
 - Upload Annotations from Cornell's RavenPro
@@ -19,3 +17,12 @@ Code provided is as-is, with no guarantees. If you have questions or issues you 
 
 ## LICENSE ##
 These R scripts are licensed under an Apache License, V2.0 © 2023 Tyne Baker, and A/Vian Ecological Consulting Inc.
+
+## PLATFORM TESTING ##
+These scripts have only been tested on Windows and MacOS. 
+
+Last platform test peformed on 20APR2023 with:
+- R version 4.2.2
+- R Studio version 2023.03.0+386
+- MacOS Ventura version 13.0 
+- Windows 11 Home version 22H2
