@@ -10,11 +10,13 @@
 #
 # Dependencies: This script requires the tidyverse library to run. 
 #
+# AI Disclosure: OpenAI's ChatGPT 3.5 was used as a coding assistance tool while developing this R Script.
+#
 #**User Modifcations Required: The user needs to define the File Locations, Output CSV name, and new Column headers.**
 #     You will see stars "*" on headers where edits are required.
 # 
-# Version: 2
-# Date: Jan 30th, 2023
+# Version: 9
+# Date: March 12, 2024
 # Author: Tyne M. Baker
 # Change Log: 
 #   24JAN2023- V1- Initial drafting of functional script.
@@ -25,6 +27,7 @@
 #   02MAR2023- V6 Fix file path splitting method to be more concise and ensure a reserved is used.
 #   03MAR2023- V7 Add a checking step for the max number of delimiters in the FOLDER column.
 #   20APR2023- V8 MAC tests and small bug fixes.
+#   12MAR2024- V9- Added AI disclosure statement.
 
 # ------Clear the Workspace-------
 rm(list = ls())

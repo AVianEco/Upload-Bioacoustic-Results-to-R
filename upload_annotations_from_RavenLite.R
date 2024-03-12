@@ -9,17 +9,21 @@
 #
 # Dependencies: This script requires the tidyverse library to run. 
 #
+# AI Disclosure: OpenAI's ChatGPT 3.5 was used for coding assistance while developing this R Script.
+#
 #**User Modifcations Required: The user needs to define the File Locations, Output CSV name, and new Column headers.**
 #     You will see stars "*" on headers where edits are required.
 #     You will also see an "OPTIONAL" section, you can choose to run this or not.
 #
-# Version: 2
-# Date: Jan 30th, 2023
+# Version: 4
+# Date: March 12, 2024
 # Author: Tyne M. Baker
 # Change Log: 
 #   24JAN2023- V1- Initial drafting of functional script.
 #   30JAN2023- V2- Split from RavenPro Script. Clean-up and formatting to match other upload ID scripts.
 #   28FEB2023- V3- Test on Mac and improve script for cross-platform performance.
+#   12MAR2023- V4- added AI Disclosure.
+
 # ------Clear the Workspace-------
 rm(list = ls())
 
