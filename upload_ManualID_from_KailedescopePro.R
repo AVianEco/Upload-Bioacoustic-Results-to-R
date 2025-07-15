@@ -110,19 +110,22 @@ message("The unmodified ID_data dataframe has ", ncol(ID_data), " columns")
 
 #Split out the filepaths in the INDIR column to new columns.
 ID_data<-separate(data = ID_data, col = INDIR, into = c(INDIR_headers), sep = "\\\\", remove = FALSE)
-message ("The ID_data dataframe has ", ncol(ID_data), " columns, now")
+message ("INDIR column was split over ",length(INDIR_headers)," new columns.
+         The ID_data dataframe has ", ncol(ID_data), " columns, now")
 
 #Split out the filepaths in the FOLDER column to new columns, if necessary.
 if(is.na(ID_data$FOLDER[1]) || !str_detect(ID_data$FOLDER[1], "\\\\")) {
   message("No split necessary for FOLDER column, the ID_data dataframe still has ", ncol(ID_data), " columns.")
 } else {
   ID_data <- separate(data = ID_data, col = FOLDER, into = c(FOLDER_headers), sep = "\\\\", remove = FALSE)
-  message("FOLDER column was split into ", ncol(ID_data), " new columns")
+  message("FOLDER column was split over ",length(FOLDER_headers)," new columns. 
+          The ID_data dataframe has ", ncol(ID_data), " columns, now.")
 }
 
 #Split out the annotations in the MANUAL.ID. column to new columns.
 ID_data<-separate(data = ID_data, col = MANUAL_ID, into = c(MANUAL_ID_headers), sep = ",", remove = FALSE)
-message("The ID_data dataframe has ", ncol(ID_data), " columns, now")
+message("MANUAL.ID. column was split over ",length(MANUAL_ID_headers)," new columns. 
+        The ID_data dataframe has ", ncol(ID_data), " columns, now")
 
 # ------ Export modified dataframe to a new CSV ------
 
